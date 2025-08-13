@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Breakthrough in Cystic Fibrosis Treatment: Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F2F2F2;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+        }
+        .presentation-container {
+            min-height: 100vh; /* Changed from height to min-height */
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            box-sizing: border-box;
+        }
+        @media (min-width: 768px) {
+            .presentation-container {
+                padding-top: 8rem;
+                padding-bottom: 8rem;
+                padding-left: 4rem;
+                padding-right: 4rem;
+            }
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 384px;
+            }
+        }
+        .stat-card h3 {
+            color: #0077C0;
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            color: #0077C0;
+            line-height: 1;
+        }
+        .summary-output {
+            background-color: #e0f2f7;
+            border-left: 4px solid #0077C0;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #1a202c;
+            /* Removed 'hidden' class here for permanent display */
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0077C0;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .hover-container {
+            position: relative;
+            display: inline-block;
+        }
+        .hover-content {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            background-color: #00A1E4; /* Vibrant Blue */
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: max-content;
+            max-width: 300px;
+            text-align: left;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            pointer-events: none;
+        }
+        .hover-container:hover .hover-content {
+            visibility: visible;
+            opacity: 1;
+        }
+        .hover-content::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: #00A1E4 transparent transparent transparent;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="main-scroll-container h-screen overflow-y-scroll snap-y snap-mandatory">
+
+        <section id="header-section" class="presentation-container bg-white flex-col text-center snap-start">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#005A9E] mb-2">A New Era for Cystic Fibrosis Therapy</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-2xl">Visualizing the impact of the Elexacaftor-Tezacaftor-Ivacaftor triple combination therapy for patients with a single Phe508del allele.</p>
+        </section>
+
+        <section id="problem" class="presentation-container snap-center">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8 w-full max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-6 text-[#005A9E]">The Challenge: A Significant Unmet Medical Need</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="text-lg">
+                        <p class="mb-4">Cystic Fibrosis (CF) is an autosomal recessive genetic disorder caused by mutations in the *CFTR gene*, affecting approximately 90% of patients with at least one copy of the common Phe508del mutation.</p>
+                        <p class="mb-4">The <span class="hover-container cursor-help border-b border-dotted border-gray-500">**root cause**
+                            <span class="hover-content text-sm">
+                                CF is caused by mutations in the *CFTR gene*, leading to a dysfunctional CFTR protein. This protein acts as an anion channel, primarily regulating salt and water movement across epithelial surfaces. Its defect results in thick, sticky mucus, obstructing organ ducts and causing chronic infections and progressive damage, particularly in the lungs and pancreas.
+                            </span>
+                        </span> of CF stems from a dysfunctional CFTR protein.</p>
+                        <p>Historically, patients with a single Phe508del allele and a "minimal-function" mutation have lacked an effective CFTR modulator therapy addressing the underlying protein defect. This study evaluates a novel triple-combination regimen to target this specific patient population.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="patientPopulationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+            
+        <section id="trial-design" class="presentation-container snap-center text-center">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8 w-full max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-6 text-[#005A9E]">A Rigorous Clinical Trial Design</h2>
+                <p class="max-w-3xl mx-auto text-lg mb-4">This study employed a rigorous <span class="hover-container cursor-help border-b border-dotted border-gray-500">Phase 3 clinical trial
+                    <span class="hover-content text-sm">
+                        **Phase 3 trials** are pivotal, large-scale studies (hundreds to thousands of patients) that compare a new drug to standard treatment or placebo. They aim to confirm efficacy, monitor side effects, and gather comprehensive data for regulatory approval.
+                    </span>
+                 </span> methodology, considered the benchmark for establishing drug efficacy and safety prior to regulatory approval.</p>
+                 <p class="max-w-3xl mx-auto text-lg mb-8">The <span class="hover-container cursor-help border-b border-dotted border-gray-500">**randomized, double-blind, placebo-controlled**
+                    <span class="hover-content text-sm">
+                        * **Randomized:** Participants are assigned to treatment groups by chance (e.g., via a computer algorithm) to ensure groups are comparable and minimize selection bias.
+                        * **Double-blind:** Neither the patients nor the researchers administering the treatment know who is receiving the active drug versus the placebo. This prevents conscious or unconscious bias from influencing patient outcomes or data collection.
+                        * **Placebo-controlled:** A group receives an inactive substance (placebo) identical in appearance to the active drug. This allows for a clear comparison, demonstrating the drug's true therapeutic effect beyond the placebo effect.
+                    </span>
+                 </span> design is critical for minimizing bias.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="stat-card bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-5xl font-bold mb-2">403</h3>
+                        <p class="text-lg font-semibold text-gray-700">Patients</p>
+                    </div>
+                    <div class="stat-card bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-5xl font-bold mb-2">13</h3>
+                        <p class="text-lg font-semibold text-gray-700">Countries</p>
+                    </div>
+                    <div class="stat-card bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-5xl font-bold mb-2">24</h3>
+                        <p class="text-lg font-semibold text-gray-700">Weeks</p>
+                    </div>
+                    <div class="stat-card bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-5xl font-bold mb-2">🏆</h3>
+                        <p class="text-lg font-semibold text-gray-700">Double-Blind, Placebo-Controlled</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="results-intro" class="presentation-container snap-center">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8 w-full max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-2 text-[#005A9E]">Remarkable Clinical Improvements</h2>
+                <p class="text-center text-lg text-gray-600 mb-8" id="results-intro-text">The triple-combination therapy demonstrated <span class="hover-container cursor-help border-b border-dotted border-gray-500">statistically significant
+                    <span class="hover-content text-sm">
+                        In this study, results were statistically significant ($P<0.001$), meaning the observed differences between the treatment and placebo groups were highly unlikely to have occurred by random chance. This provides strong evidence that the drug, rather than random variation, caused the therapeutic effects seen.
+                    </span>
+                 </span> and clinically meaningful benefits across multiple key health measures compared to placebo.</p>
+                 <div class="text-center">
+                    <!-- Removed loading spinner as summaries are now static -->
+                    <div id="resultsSummaryOutput" class="summary-output">
+                        <p>This triple therapy significantly boosted lung function (FEV₁ increased by 14.3 percentage points), dramatically reduced pulmonary exacerbations by 63%, restored CFTR protein function (sweat chloride reduced by 41.8 mmol/L), and greatly enhanced patient quality of life (CFQ-R score improved by 20.2 points).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="results-fev1" class="presentation-container snap-center">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8 w-full max-w-6xl mx-auto">
+                <h3 class="text-2xl font-semibold text-center mb-4" id="fev1-heading">Dramatic Boost in Lung Function (FEV₁)</h3>
+                <p class="text-center mb-4" id="fev1-text">Patients on the therapy saw a substantial improvement in lung capacity, measured as forced expiratory volume in 1 second (FEV₁), a primary indicator of respiratory health in CF.</p>
+                <div class="chart-container">
+                    <canvas id="fev1Chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="results-exacerbations" class="presentation-container snap-center">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8 w-full max-w-6xl mx-auto">
+                <h3 class="text-2xl font-semibold text-center mb-4" id="exacerbations-heading">63% Reduction in Pulmonary Exacerbations</h3>
+                <p class="text-center mb-4" id="exacerbations-text">The treatment led to a major decrease in pulmonary exacerbations, acute worsening of respiratory symptoms often requiring hospitalization and intravenous antibiotics, which contribute to progressive lung damage in CF.</p>
+                <div class="chart-container">
+                    <canvas id="exacerbationsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="results-sweatchloride" class="presentation-container snap-center">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8 w-full max-w-6xl mx-auto">
+                <h3 class="text-2xl font-semibold text-center mb-4" id="sweatchloride-heading">Restored CFTR Protein Function</h3>
+                 <p class="text-center mb-4" id="sweatchloride-text">Sweat chloride concentration serves as a direct biomarker of CFTR protein function. The therapy significantly reduced sweat chloride levels, bringing them closer to the non-CF diagnostic range, indicating improved channel activity.</p>
+                <div class="chart-container">
+                    <canvas id="sweatChlorideChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="results-qol" class="presentation-container snap-center">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8 w-full max-w-6xl mx-auto">
+                <h3 class="text-2xl font-semibold text-center mb-4" id="qol-heading">Enhanced Quality of Life</h3>
+                <p class="text-center mb-4" id="qol-text">Patient-reported outcomes, specifically the Cystic Fibrosis Questionnaire-Revised (CFQ-R) respiratory domain score, demonstrated a significant improvement in respiratory symptoms and overall quality of life, a crucial aspect of patient-centered care.</p>
+                <div class="chart-container">
+                    <canvas id="qolChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="safety" class="presentation-container snap-center">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8 w-full max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-6 text-[#005A9E]">Safety and Tolerability Profile</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <p class="text-lg mb-4" id="safety-text-1">The triple-drug combination was found to be generally favorable safety and tolerability profile. The majority of reported adverse events were classified as mild or moderate in severity.</p>
+                        <p class="text-lg" id="safety-text-2">Notably, only 1% of patients in the active treatment group discontinued the trial regimen due to adverse events, underscoring its acceptable clinical tolerability. Common adverse events were consistent with known manifestations and complications of cystic fibrosis.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="safetyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="implications" class="presentation-container snap-center text-center">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8 w-full max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-6 text-[#005A9E]">Critical Considerations & Future Implications</h2>
+                <p class="max-w-3xl mx-auto text-lg mb-8" id="implications-intro-text">While the study's findings are transformative, a comprehensive understanding requires acknowledging both methodological strengths and inherent limitations.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-500">
+                        <h3 class="text-2xl font-semibold mb-4">Strengths ✅</h3>
+                        <ul class="list-disc list-inside space-y-2 text-left" id="strengths-list">
+                            <li><strong>Robust Design:</strong> The Phase 3, randomized, double-blind, placebo-controlled design provides strong internal validity, minimizing confounding factors.</li>
+                            <li><strong>Large & International Scale:</strong> A sizable and geographically diverse patient cohort enhances the external validity and generalizability of the findings.</li>
+                            <li><strong>Clear & Clinically Meaningful Outcomes:</strong> Consistent, statistically significant improvements were observed across key objective (e.g., FEV₁, sweat chloride) and patient-reported endpoints.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-yellow-500">
+                        <h3 class="text-2xl font-semibold mb-4">Limitations ⚠️</h3>
+                        <ul class="list-disc list-inside space-y-2 text-left" id="limitations-list">
+                            <li><strong>Industry Funding:</strong> Funding and partial conduct by the drug's manufacturer (Vertex Pharmaceuticals) necessitates cautious interpretation due to potential for commercial bias.</li>
+                            <li><strong>Short Duration:</strong> The 24-week duration limits assessment of long-term efficacy, safety, and durability of treatment effects. Extended follow-up studies are warranted.</li>
+                            <li><strong>Specific Patient Population:</strong> Results are directly applicable to patients with the Phe508del-minimal function genotype and may not extrapolate to other CF mutation profiles.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="text-center mt-8">
+                    <!-- Removed loading spinner as summaries are now static -->
+                    <div id="implicationsSummaryOutput" class="summary-output">
+                        <p>Strengths of the study include its robust Phase 3 randomized, double-blind, placebo-controlled design and large, international patient cohort, providing strong and generalizable evidence for clear, clinically meaningful outcomes across multiple endpoints. Limitations include industry funding, which may introduce potential bias, and a relatively short 24-week duration that limits the assessment of long-term efficacy and safety. Additionally, the results are specific to patients with the Phe508del-minimal function genotype and may not apply to other CF mutation profiles.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="footer-section" class="presentation-container snap-end flex-col text-center">
+            <footer class="text-center">
+                <p class="text-gray-600 mb-2">Infographic based on the study: Middleton P.G., et al. (2019). Elexacaftor–Tezacaftor–Ivacaftor for Cystic Fibrosis with a Single Phe508del Allele. *N Engl J Med*, 381:1809-19.</p>
+                <p class="text-sm text-gray-500">This visualization is for informational purposes only and is not medical advice.</p>
+            </footer>
+        </section>
+
+    </div>
+
+    <script>
+        const brilliantBlues = {
+            primary: '#00A1E4',
+            secondary: '#0077C0',
+            dark: '#005A9E',
+            light: '#F2F2F2',
+            text: '#333333',
+            placebo: '#9ca3af',
+        };
+
+        const chartDefaultOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: {
+                            size: 14,
+                            family: 'Inter'
+                        },
+                        color: brilliantBlues.text,
+                        padding: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            } else {
+                              return label;
+                            }
+                        }
+                    },
+                    bodyFont: {
+                        size: 14,
+                        family: 'Inter'
+                    },
+                    titleFont: {
+                        size: 16,
+                        family: 'Inter'
+                    },
+                    padding: 12,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: '#e5e7eb'
+                    },
+                    ticks: {
+                        color: brilliantBlues.text,
+                        font: {
+                            family: 'Inter'
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: brilliantBlues.text,
+                        font: {
+                            family: 'Inter'
+                        }
+                    }
+                }
+            }
+        };
+
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 < maxWidth) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // Helper function to destroy existing chart if it exists
+        function createOrUpdateChart(chartId, chartType, chartData, chartOptions) {
+            const canvas = document.getElementById(chartId);
+            if (canvas) {
+                const existingChart = Chart.getChart(canvas);
+                if (existingChart) {
+                    existingChart.destroy();
+                }
+                return new Chart(canvas, {
+                    type: chartType,
+                    data: chartData,
+                    options: chartOptions
+                });
+            }
+            return null;
+        }
+
+
+        // const apiKey = ""; // API key is no longer directly used for static summaries
+
+        // Removed callGeminiAPI function as it's no longer needed for static summaries
+
+        // Call summarize functions on page load for permanent display
+        window.onload = function() {
+            createOrUpdateChart('patientPopulationChart', 'doughnut', {
+                labels: ['Have at least one Phe508del mutation', 'Other mutations'],
+                datasets: [{
+                    label: 'Patient Population',
+                    data: [90, 10],
+                    backgroundColor: [brilliantBlues.primary, brilliantBlues.placebo],
+                    borderColor: brilliantBlues.light,
+                    borderWidth: 4,
+                }]
+            }, {
+                responsive: true,
+                maintainAspectRatio: false,
+                 plugins: {
+                    legend: chartDefaultOptions.plugins.legend,
+                    tooltip: chartDefaultOptions.plugins.tooltip,
+                    title: {
+                        display: true,
+                        text: 'CF Patients with Phe508del Mutation',
+                        font: { size: 18, family: 'Inter' },
+                        color: brilliantBlues.dark,
+                        padding: { bottom: 20 }
+                    }
+                }
+            });
+
+            createOrUpdateChart('fev1Chart', 'bar', {
+                labels: ['Triple Therapy', 'Placebo'],
+                datasets: [{
+                    label: 'Points Improvement',
+                    data: [14.3, -0.4],
+                    backgroundColor: [brilliantBlues.primary, brilliantBlues.placebo],
+                    borderRadius: 4,
+                    barPercentage: 0.6
+                }]
+            }, { ...chartDefaultOptions,
+                plugins: {
+                    ...chartDefaultOptions.plugins,
+                    legend: { display: false }
+                },
+                scales: {
+                    ...chartDefaultOptions.scales,
+                    y: { ...chartDefaultOptions.scales.y, title: { display: true, text: 'Change in FEV₁ (% Predicted)', font: { family: 'Inter' } } }
+                }
+            });
+
+            createOrUpdateChart('exacerbationsChart', 'doughnut', {
+                labels: ['Reduction', 'Remaining Rate'],
+                datasets: [{
+                    data: [63, 37],
+                    backgroundColor: [brilliantBlues.primary, brilliantBlues.placebo],
+                    borderColor: brilliantBlues.light,
+                    borderWidth: 4,
+                }]
+            }, {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: chartDefaultOptions.plugins,
+                cutout: '60%',
+            });
+
+            createOrUpdateChart('sweatChlorideChart', 'bar', {
+                labels: ['Triple Therapy', 'Placebo'],
+                datasets: [{
+                    label: 'mmol/L Reduction',
+                    data: [-41.8, -0.4],
+                    backgroundColor: [brilliantBlues.primary, brilliantBlues.placebo],
+                    borderRadius: 4,
+                    barPercentage: 0.6
+                }]
+            }, { ...chartDefaultOptions,
+                plugins: {
+                    ...chartDefaultOptions.plugins,
+                    legend: { display: false }
+                },
+                scales: {
+                     ...chartDefaultOptions.scales,
+                    y: { ...chartDefaultOptions.scales.y, title: { display: true, text: 'Change in Sweat Chloride (mmol/L)', font: { family: 'Inter' } } }
+                }
+            });
+            
+            createOrUpdateChart('qolChart', 'bar', {
+                labels: ['Triple Therapy', 'Placebo'],
+                datasets: [{
+                    label: 'Points Improvement',
+                    data: [20.2, -2.7],
+                    backgroundColor: [brilliantBlues.primary, brilliantBlues.placebo],
+                    borderRadius: 4,
+                    barPercentage: 0.6
+                }]
+            }, { ...chartDefaultOptions,
+                plugins: {
+                    ...chartDefaultOptions.plugins,
+                    legend: { display: false }
+                },
+                scales: {
+                     ...chartDefaultOptions.scales,
+                    y: { ...chartDefaultOptions.scales.y, title: { display: true, text: 'Change in CFQ-R Score', font: { family: 'Inter' } } }
+                }
+            });
+
+            createOrUpdateChart('safetyChart', 'bar', {
+                labels: ['Adverse Event Severity in Treatment Group'],
+                datasets: [
+                    {
+                        label: 'Mild',
+                        data: [33.2],
+                        backgroundColor: brilliantBlues.primary,
+                    },
+                    {
+                        label: 'Moderate',
+                        data: [50.5],
+                        backgroundColor: brilliantBlues.secondary,
+                    },
+                    {
+                        label: 'Severe',
+                        data: [9.4],
+                        backgroundColor: brilliantBlues.placebo,
+                    }
+                ]
+            }, { ...chartDefaultOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        stacked: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) { return value + "%" }
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        grid: { display: false },
+                        ticks: { display: false }
+                    }
+                }
+            });
+        };
+    </script>
+</body>
+</html>
